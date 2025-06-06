@@ -30,3 +30,27 @@ class HomePage(BasePage):
             menu_item = item["selector"]
             expect(menu_item).to_be_visible()
             expect(menu_item).to_have_text(item["text"])
+
+    def state_flag_is_visible(self):
+        state_flag = self.page.get_by_role("link", name="Motozem.cz", exact=True)
+        expect(state_flag).to_be_visible()
+
+    def state_flags_are_visible_when_hover_over(self):
+        state_flag = self.page.get_by_role("link", name="Motozem.cz", exact=True)
+        state_flag.hover()
+
+        flag_items = [
+            {"selector": self.page.get_by_role("link", name="Motozem.sk"), "aria_label": "Motozem.sk"},
+            {"selector": self.page.get_by_role("link", name="Motozem.hu"), "aria_label": "Motozem.hu"},
+            {"selector": self.page.get_by_role("link", name="Motozem.pl"), "aria_label": "Motozem.pl"},
+            {"selector": self.page.get_by_role("link", name="Motozem.at"), "aria_label": "Motozem.at"},
+            {"selector": self.page.get_by_role("link", name="Motozem.de"), "aria_label": "Motozem.de"},
+            {"selector": self.page.get_by_role("link", name="Motozem.ro"), "aria_label": "Motozem.ro"},
+            {"selector": self.page.get_by_role("link", name="Motozem.hr"), "aria_label": "Motozem.hr"},
+            {"selector": self.page.get_by_role("link", name="Motozem.si"), "aria_label": "Motozem.si"},
+        ]
+
+        for flag in flag_items:
+            menu_item = flag["selector"]
+            expect(menu_item).to_be_visible()
+            expect(menu_item).to_have_attribute("aria-label", flag["aria_label"])

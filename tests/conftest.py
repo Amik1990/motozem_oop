@@ -8,7 +8,7 @@ from pages.home_page import HomePage
 
 
 @pytest.fixture()
-def load_motozem(page: Page):    # načtění stránky motozem
+def load_home_page(page: Page):    # načtění stránky motozem
     home = HomePage(page)
     home.load()
     return home
@@ -23,7 +23,7 @@ def load_header_page(page: Page):    # načtění stránky motozem
     return home
 
 # @pytest.fixture()
-# def add_to_shopping_cart(page, load_motozem):
+# def add_to_shopping_cart(page, load_home_page):
 #     page.get_by_role("banner").get_by_role("textbox").fill("revit tornado 3")
 #     revit_tornado = page.get_by_role("link", name="Výprodej -2 062 Kč Bunda na motorku Revit Tornado 3 černá výprodej 6 187 Kč 8")
 #     lupa = page.get_by_role("button", name="Hledat")

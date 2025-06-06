@@ -14,3 +14,4 @@ def test_prodejny_menu_is_visible(load_header_page):
 
 def test_prodejny_menu_content_is_visible(load_header_page):
     load_header_page.prodejny_menu_content()
+
