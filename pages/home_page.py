@@ -54,3 +54,23 @@ class HomePage(BasePage):
             menu_item = flag["selector"]
             expect(menu_item).to_be_visible()
             expect(menu_item).to_have_attribute("aria-label", flag["aria_label"])
+
+
+    def muj_ucet_is_visible(self):
+        muj_ucet = self.page.get_by_role("link", name="Můj účet")
+        expect(muj_ucet).to_be_visible()
+
+    def ucet_menu_is_visible_when_hoover_over_muj_ucet(self):
+        muj_ucet = self.page.get_by_role("link", name="Můj účet")
+        muj_ucet_menu = self.page.get_by_text("Přihlásit Registrovat")
+        muj_ucet.hover()
+        expect(muj_ucet_menu).to_be_visible()
+
+    def prihlaseni_uzivatele_is_visible(self):
+        muj_ucet = self.page.get_by_role("link", name="Můj účet")
+        prihlaseni_uzivatele_text = self.page.get_by_role("heading", name="Přihlášení uživatele")
+
+        muj_ucet.hover()
+        prihlasit = self.page.get_by_label("Přihlásit")
+        prihlasit.click()
+        expect(prihlaseni_uzivatele_text).to_have_text("Přihlášení uživatele")
