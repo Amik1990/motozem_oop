@@ -4,6 +4,7 @@ import re
 from playwright.sync_api import BrowserType, sync_playwright, Page, expect
 
 from header_page import HeaderPage
+from login_page import LoginPage
 from pages.home_page import HomePage
 
 
@@ -18,9 +19,15 @@ def load_home_page(page: Page):    # načtění stránky motozem
 
 @pytest.fixture()
 def load_header_page(page: Page):    # načtění stránky motozem
-    home = HeaderPage(page)
-    home.load()
-    return home
+    header = HeaderPage(page)
+    header.load()
+    return header
+
+@pytest.fixture()
+def load_login_page(page: Page):    # načtění stránky motozem
+    login = LoginPage(page)
+    login.load()
+    return login
 
 # @pytest.fixture()
 # def add_to_shopping_cart(page, load_home_page):
