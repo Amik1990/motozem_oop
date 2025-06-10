@@ -6,6 +6,7 @@ from playwright.sync_api import BrowserType, sync_playwright, Page, expect
 from header_page import HeaderPage
 from login_page import LoginPage
 from pages.home_page import HomePage
+from shopping_cart_page import ShoppingCartPage
 
 
 @pytest.fixture()
@@ -13,9 +14,6 @@ def load_home_page(page: Page):    # načtění stránky motozem
     home = HomePage(page)
     home.load()
     return home
-    # page.goto("https://www.motozem.cz/")
-    # accept_cookies = page.get_by_role("link", name="OK", exact=True)
-    # accept_cookies.click()
 
 @pytest.fixture()
 def load_header_page(page: Page):    # načtění stránky motozem
@@ -28,6 +26,12 @@ def load_login_page(page: Page):    # načtění stránky motozem
     login = LoginPage(page)
     login.load()
     return login
+
+@pytest.fixture()
+def load_shopping_cart_page(page: Page):    # načtění stránky motozem
+    home = ShoppingCartPage(page)
+    home.load()
+    return home
 
 # @pytest.fixture()
 # def add_to_shopping_cart(page, load_home_page):
