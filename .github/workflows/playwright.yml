@@ -34,7 +34,7 @@ jobs:
           PYTHONPATH=${GITHUB_WORKSPACE} pytest tests/ --disable-warnings --alluredir=allure-results
 
       - name: 💾 Uložení artefaktu (Allure výsledky)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-results
           path: allure-results
