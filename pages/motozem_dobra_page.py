@@ -17,9 +17,9 @@ class MotozemDobraPage(BasePage):
         expect(motoshop_dobra_banner).to_be_visible()
         expect(souradnice_dobra).to_be_visible()
         with self.page.expect_popup() as page1_info:
-            self.page.get_by_role("link", name="Ukázat na mapě").click()
+            self.page.get_by_role("link", name="Ukázat na mapě").click(timeout=5000)
         page1 = page1_info.value
-        page1.get_by_role("button", name="Přijmout vše").click()
+        page1.get_by_role("button", name="Přijmout vše").click(timeout=5000)
 
         google_maps_dobra = page1.get_by_role("heading", name="MotoZem - Dobrá", exact=True)
         expect(google_maps_dobra).to_be_visible()

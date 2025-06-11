@@ -19,7 +19,7 @@ class ShoppingCartPage(BasePage):
         pocet_v_kosiku_dva = self.page.locator("a").filter(has_text=re.compile(r"^2$"))
 
         lupa.click()
-        expect(revit_tornado).to_be_visible()
+        expect(revit_tornado).to_be_visible(timeout=10000)
         revit_tornado.click()
         medium_size.click()
         koupit_button.click()
