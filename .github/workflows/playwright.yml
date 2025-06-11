@@ -25,6 +25,9 @@ jobs:
           pip install -r requirements.txt
           playwright install
 
+      - name: ✅ Nastavení PYTHONPATH
+        run: echo "PYTHONPATH=${GITHUB_WORKSPACE}" >> $GITHUB_ENV
+
       - name: ▶️ Spuštění testů
         run: |
           pytest tests/ --headed --disable-warnings
