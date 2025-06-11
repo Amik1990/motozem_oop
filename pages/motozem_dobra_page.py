@@ -16,19 +16,21 @@ class MotozemDobraPage(BasePage):
 
         expect(motoshop_dobra_banner).to_be_visible()
         expect(souradnice_dobra).to_be_visible()
-        with self.page.expect_popup() as page1_info:
-            self.page.get_by_role("link", name="Ukázat na mapě").click(timeout=5000)
-        page1 = page1_info.value
 
+        # kdyz kliknu na Ukazat na mape, tak se zobrazi samostatne okno, proto pouziju with
+        with self.page.expect_popup() as new_window:
+            self.page.get_by_role("link", name="Ukázat na mapě").click(timeout=5000)
+        google_maps = new_window.value
+
+# Pouziju try, kdyby se nahodou nezobrazilo cookies window.
         try:
-            accept_button = page1.get_by_role("button", name="Přijmout vše")
+            accept_button = google_maps.get_by_role("button", name="Přijmout vše")
             if accept_button.is_visible(timeout=3000):
                 accept_button.click()
         except:
             pass
 
-      #  page1.get_by_role("button", name="Přijmout vše").click(timeout=5000)
 
-        expect(page1).to_have_url(re.compile(r"https://www\.google\.[a-z.]+/maps.*"))
-        google_maps_dobra = page1.get_by_role("heading", name="MotoZem - Dobrá", exact=True)
+        expect(google_maps).to_have_url(re.compile(r"https://www\.google\.[a-z.]+/maps.*"))
+        google_maps_dobra = google_maps.get_by_role("heading", name="MotoZem - Dobrá", exact=True)
         expect(google_maps_dobra).to_be_visible()
