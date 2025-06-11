@@ -21,5 +21,6 @@ class MotozemDobraPage(BasePage):
         page1 = page1_info.value
         page1.get_by_role("button", name="Přijmout vše").click(timeout=5000)
 
+        expect(page1).to_have_url(re.compile(r"https://www\.google\.[a-z.]+/maps.*"))
         google_maps_dobra = page1.get_by_role("heading", name="MotoZem - Dobrá", exact=True)
         expect(google_maps_dobra).to_be_visible()
