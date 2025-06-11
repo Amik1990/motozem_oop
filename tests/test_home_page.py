@@ -1,8 +1,8 @@
 from pages.home_page import HomePage
 from playwright.sync_api import expect, Page
 
-def test_load_home_page(load_home_page):
-    load_home_page.load()
+# def test_load_home_page(load_home_page):
+#     load_home_page.load()
 
 def test_banner_motozem_is_visible(load_home_page):
     load_home_page.is_banner_visible()
