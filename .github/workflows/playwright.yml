@@ -30,4 +30,4 @@ jobs:
 
       - name: ▶️ Spuštění testů
         run: |
-          PYTHONPATH=${GITHUB_WORKSPACE} pytest tests/ --headed --disable-warnings
+          PYTHONPATH=${GITHUB_WORKSPACE} pytest tests/ --disable-warnings
