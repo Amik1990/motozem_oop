@@ -17,7 +17,7 @@ class MotozemDobraPage(BasePage):
         expect(motoshop_dobra_banner).to_be_visible()
         expect(souradnice_dobra).to_be_visible()
 
-        # kdyz kliknu na Ukazat na mape, tak se zobrazi samostatne okno, proto pouziju with
+# kdyz kliknu na Ukazat na mape, tak se zobrazi samostatne okno, proto pouziju "with"
         with self.page.expect_popup() as new_window:
             self.page.get_by_role("link", name="Ukázat na mapě").click(timeout=5000)
         google_maps = new_window.value

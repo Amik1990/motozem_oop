@@ -2,9 +2,9 @@ name: 🧪 Playwright Python Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, acc ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, acc ]
 
 jobs:
   test:

@@ -12,7 +12,9 @@ class ShoppingCartPage(BasePage):
 
     def add_to_shopping_cart(self):
         self.page.get_by_role("banner").get_by_role("textbox").fill("revit tornado 4")
-        revit_tornado = self.page.get_by_role("link", name="Bunda na motorku Revit Tornado 4 H2O černo-antracitová 8 429 Kč Skladem", exact=True)
+        revit_tornado = self.page.get_by_text(
+            re.compile(r"Bunda na motorku Revit Tornado 4 H2O černo-antracitová.*Skladem")
+        )
         lupa = self.page.get_by_role("button", name="Hledat")
         medium_size = self.page.locator("label").filter(has_text="M").nth(1).first
         koupit_button = self.page.get_by_role("button", name="Koupit")
