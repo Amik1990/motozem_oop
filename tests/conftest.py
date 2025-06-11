@@ -4,10 +4,10 @@ import re
 from playwright.sync_api import BrowserType, sync_playwright, Page, expect
 
 from pages.header_page import HeaderPage
-from login_page import LoginPage
-from motozem_dobra_page import MotozemDobraPage
+from pages.login_page import LoginPage
+from pages.motozem_dobra_page import MotozemDobraPage
 from pages.home_page import HomePage
-from shopping_cart_page import ShoppingCartPage
+from pages.shopping_cart_page import ShoppingCartPage
 
 
 @pytest.fixture()
