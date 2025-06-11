@@ -19,7 +19,15 @@ class MotozemDobraPage(BasePage):
         with self.page.expect_popup() as page1_info:
             self.page.get_by_role("link", name="Ukázat na mapě").click(timeout=5000)
         page1 = page1_info.value
-        page1.get_by_role("button", name="Přijmout vše").click(timeout=5000)
+
+        try:
+            accept_button = page1.get_by_role("button", name="Přijmout vše")
+            if accept_button.is_visible(timeout=3000):
+                accept_button.click()
+        except:
+            pass
+
+      #  page1.get_by_role("button", name="Přijmout vše").click(timeout=5000)
 
         expect(page1).to_have_url(re.compile(r"https://www\.google\.[a-z.]+/maps.*"))
         google_maps_dobra = page1.get_by_role("heading", name="MotoZem - Dobrá", exact=True)
