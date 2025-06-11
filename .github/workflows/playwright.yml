@@ -28,6 +28,14 @@ jobs:
       - name: ✅ Nastavení PYTHONPATH
         run: echo "PYTHONPATH=${GITHUB_WORKSPACE}" >> $GITHUB_ENV
 
-      - name: ▶️ Spuštění testů
+      - name: ▶️ Spuštění testů s Allure výstupem
         run: |
-          PYTHONPATH=${GITHUB_WORKSPACE} pytest tests/ --disable-warnings
+          mkdir -p allure-results
+          PYTHONPATH=${GITHUB_WORKSPACE} pytest tests/ --disable-warnings --alluredir=allure-results
+
+      - name: 💾 Uložení artefaktu (Allure výsledky)
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-results
+          path: allure-results
+          
