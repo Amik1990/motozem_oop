@@ -3,7 +3,7 @@ import pytest
 import re
 from playwright.sync_api import BrowserType, sync_playwright, Page, expect
 
-from header_page import HeaderPage
+from pages.header_page import HeaderPage
 from login_page import LoginPage
 from motozem_dobra_page import MotozemDobraPage
 from pages.home_page import HomePage
