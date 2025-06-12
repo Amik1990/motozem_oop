@@ -47,5 +47,9 @@ jobs:
           name: allure-results
           path: allure-results
 
-
+      - name: 💾 Uložení artefaktu (Allure HTML report)
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report
           
