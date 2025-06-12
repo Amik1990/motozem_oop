@@ -38,4 +38,12 @@ jobs:
         with:
           name: allure-results
           path: allure-results
+
+      - name:
+          🧾 Debug: výpis obsahu složky
+        run: |
+          echo "Obsah workspace:"
+          ls -la
+          echo "Obsah složky allure-results:"
+          ls -la allure-results || echo "Složka allure-results neexistuje"
           
