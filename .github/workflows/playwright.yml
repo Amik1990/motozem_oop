@@ -33,7 +33,8 @@ jobs:
           mkdir -p allure-results
           PYTHONPATH=${GITHUB_WORKSPACE} pytest tests/ --disable-warnings --alluredir=allure-results
 
-      - name:🧾 Debug: výpis obsahu složky
+
+      - name: 🧾 Debug:výpis obsahu složky
         run: |
           echo "Obsah workspace:"
           ls -la
