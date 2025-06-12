@@ -27,7 +27,7 @@ jobs:
 
       - name: 🛠️ Instalace Allure CLI
         run: |
-          wget https://github.com/allure-framework/allure2/releases/latest/download/allure-2.27.0.tgz
+          wget https://github.com/allure-framework/allure2/releases/download/2.34.0/allure-2.27.0.tgz
           tar -xzf allure-2.27.0.tgz
           sudo mv allure-2.27.0/bin/allure /usr/local/bin/
           allure --version
