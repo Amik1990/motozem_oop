@@ -33,17 +33,18 @@ jobs:
           mkdir -p allure-results
           PYTHONPATH=${GITHUB_WORKSPACE} pytest tests/ --disable-warnings --alluredir=allure-results
 
+      - name:🧾 Debug: výpis obsahu složky
+        run: |
+          echo "Obsah workspace:"
+          ls -la
+          echo "Obsah složky allure-results:"
+          ls -la allure-results || echo "Složka allure-results neexistuje"
+
       - name: 💾 Uložení artefaktu (Allure výsledky)
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
           path: allure-results
 
-      - name:
-          🧾 Debug: výpis obsahu složky
-        run: |
-          echo "Obsah workspace:"
-          ls -la
-          echo "Obsah složky allure-results:"
-          ls -la allure-results || echo "Složka allure-results neexistuje"
+
           
