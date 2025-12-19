@@ -1,7 +1,8 @@
 from pages.base_page import BasePage
-from playwright.sync_api import expect
+from playwright.sync_api import expect, Locator
 
 class HomePage(BasePage):
+
 
     def load(self):
         self.page.goto("https://www.motozem.cz/")

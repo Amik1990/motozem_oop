@@ -1,8 +1,11 @@
 from pages.base_page import BasePage
-from playwright.sync_api import expect
+from playwright.sync_api import expect, Page
 import re
 
 class MotozemDobraPage(BasePage):
+
+    def __init__(self, page: Page):
+        super().__init__(page)
 
     def load(self):
         self.page.goto("https://www.motozem.cz/motozem-dobra/")
