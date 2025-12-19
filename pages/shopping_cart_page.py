@@ -5,10 +5,8 @@ import re
 class ShoppingCartPage(BasePage):
 
     def load(self):
-        self.page.goto("https://www.motozem.cz/")
-        button = self.page.get_by_role("link", name="OK", exact=True)
-        self.click(button)
-
+        self.navigate("https://www.motozem.cz/")
+        self.accept_cookies()
 
     def add_to_shopping_cart(self):
         self.page.get_by_role("banner").get_by_role("textbox").fill("revit tornado 4")

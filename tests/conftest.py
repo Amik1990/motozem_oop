@@ -22,8 +22,8 @@ def browser_type_launch_args(browser_type_launch_args):
     """
     return {
         **browser_type_launch_args,
-        "headless": False,  # Tímto zapneš Headed mód
-        "slow_mo": 500      # Volitelné: zpomalí test, abys viděl, co se děje
+        "headless": False,  # Tímto zapnnu Headed mód
+        "slow_mo": 500      # Volitelné: zpomalí test, abych viděl, co se děje
     }
 
 @pytest.fixture(scope="session")
@@ -39,8 +39,6 @@ def browser_context_args(browser_context_args):
 
 @pytest.fixture()
 def load_home_page(page: Page):    # načtění stránky motozem
-    # home = HomePage(page)
-    # home.load()
     return setup_page(HomePage, page)
 
 @pytest.fixture()

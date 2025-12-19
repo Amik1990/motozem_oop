@@ -4,10 +4,10 @@ from utils.logger_config import get_logger  # Import našeho loggeru
 LOG = get_logger("FixtureUtils")  # Inicializace loggeru
 
 
-def setup_page(PageClass, page: Page):
+def setup_page(PageClass, page: Page):     # Když použiju page: Page  , tak Editor ví, že page je instance třídy Page z Playwrightu. Jakmile napíšu tečku (page.), okamžitě mi nabídne metody jako .click(), .fill(), .screenshot(), .goto() a zobrazí k nim dokumentaci.
     """
     Univerzální logika pro přípravu jakékoliv stránky.
-    Oddělená od conftest.py pro lepší přehlednost.
+    Oddělená od conftest.py pro lepší přehlednost. Odkazuju se na ni v conftest.
     """
     class_name = PageClass.__name__  # Dynamické získání názvu třídy
     LOG.info(f"--- SETUP: Inicializace {class_name} ---")  # Logování startu

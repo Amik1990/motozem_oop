@@ -4,14 +4,11 @@ import re
 
 class MotozemDobraPage(BasePage):
 
-    def __init__(self, page: Page):
-        super().__init__(page)
-
     def load(self):
-        self.page.goto("https://www.motozem.cz/motozem-dobra/")
-        button = self.page.get_by_role("link", name="OK", exact=True)
-        self.click(button)
-
+     self.navigate("https://www.motozem.cz/motozem-dobra/")
+     self.accept_cookies()
+     # Ověření, že se stránka skutečně načetla (vidím nadpis)
+     expect(self.page.get_by_role("heading", name="Motoshop Dobrá")).to_be_visible()
 
     def lokace_dobra_google_maps_open(self):
         motoshop_dobra_banner = self.page.get_by_role("heading", name="Motoshop Dobrá")

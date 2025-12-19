@@ -1,6 +1,3 @@
-from multiprocessing.util import get_logger
-from tkinter.font import names
-
 from playwright.sync_api import Page, expect
 from playwright.sync_api import Locator
 import re
@@ -17,8 +14,14 @@ class BasePage:
         self.page.goto(url)  # Playwright akce
         self.page.wait_for_load_state("networkidle")  # Počkat, až se síť uklidní
 
+    def accept_cookies(self):
+        """Accepts cookies."""
+        button = self.page.get_by_role("link", name="OK", exact=True)
+        if button.is_visible():
+            self.click(button, name="OK cookie button")
+
     def click(self, element, name="element"):
-        """Kliknutí na element (podporuje string i Locator."""
+        """Kliknutí na element (podporuje string i Locator.)"""
         self.LOG.info(f"Kliknutí na: {name}")
         # Kontrola: Pokud je element Locator, voláme .click() přímo na něm
         # Pokud je to string, použijeme self.page.click()
@@ -56,7 +59,7 @@ class BasePage:
         """Ověří, že prvek obsahuje konkrétní text."""
         self.LOG.info(f"Ověřuji, zda má '{name}'  text: '{expected_text} ")
         try:
-            expect(element).to_have_text()
+            expect(element).to_have_text(expected_text)
             self.LOG.success(f"Prvek '{name}' obsahuje text: '{expected_text}")  # Logování úspěchu
         except Exception as e:
             actual_text = element.inner_text()     # Získání aktuálního textu pro lepší debug
@@ -67,11 +70,8 @@ class BasePage:
 
         self.LOG.info(f"Ověřuji, zda má '{attribute}'  atribut: '{expected_text}")
         try:
-            expect(element).to_have_attribute()
+            expect(element).to_have_attribute(attribute, expected_text)
             self.LOG.success(f"Prvek '{attribute}' obsahuje text: '{expected_text}")
         except Exception as e:
             actual_text = element.inner_text()
             self.LOG.error(f"Chyba: '{attribute}' obsahuje text '{actual_text}', ale čekali jsme: '{expected_text}'")
-
-
-

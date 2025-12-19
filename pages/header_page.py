@@ -4,16 +4,14 @@ from playwright.sync_api import expect
 class HeaderPage(BasePage):
 
     def load(self):
-        self.page.goto("https://www.motozem.cz/")
-        button = self.page.get_by_role("link", name="OK", exact=True)
-        self.click(button)
+        self.navigate("https://www.motozem.cz/")
+        self.accept_cookies()
 
     def informace_menu_is_visible_when_hover_over(self):
         informace_button = self.page.get_by_role("link", name="Informace")
         informace_menu = self.page.get_by_text("O nás Obchodní podmínky Ochrana osobních údajů Velkoobchod Prodejny Články Vnit")
         informace_button.hover()
         expect(informace_menu).to_be_visible()
-
 
     def informace_menu_content(self):
         informace_button = self.page.get_by_role("link", name="Informace")
