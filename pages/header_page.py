@@ -3,7 +3,7 @@ from playwright.sync_api import expect
 
 class HeaderPage(BasePage):
 
-    def load(self):
+    def load(self):  # pouzije se pak v fixture_utils.py v setup_page casti try  instance.load
         self.navigate("https://www.motozem.cz/")
         self.accept_cookies()
 

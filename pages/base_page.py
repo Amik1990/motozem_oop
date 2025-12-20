@@ -66,12 +66,12 @@ class BasePage:
             self.LOG.error(f"Chyba: '{name}' má text '{actual_text}', ale čekali jsme '{expected_text}'")  # Logování chyby
             raise e  # Vyhození výjimky dál pro Pytest
 
-    def to_have_attribute(self, element: Locator, expected_text: str, attribute: str = "element"):
-
-        self.LOG.info(f"Ověřuji, zda má '{attribute}'  atribut: '{expected_text}")
+    def to_have_attribute(self, element: Locator, attribute_name: str, expected_value: str, name: str = "element"):
+        """Ověří, že prvek má daný atribut s konkrétní hodnotou."""
+        self.LOG.info(f"Ověřuji, zda má '{name}' atribut '{attribute_name}' s hodnotou: '{expected_value}'")
         try:
-            expect(element).to_have_attribute(attribute, expected_text)
-            self.LOG.success(f"Prvek '{attribute}' obsahuje text: '{expected_text}")
+            expect(element).to_have_attribute(attribute_name, expected_value)
+            self.LOG.success(f"Prvek '{name}' má atribut '{attribute_name}' s hodnotou: '{expected_value}'")
         except Exception as e:
-            actual_text = element.inner_text()
-            self.LOG.error(f"Chyba: '{attribute}' obsahuje text '{actual_text}', ale čekali jsme: '{expected_text}'")
+            self.LOG.error(f"Chyba: Prvek '{name}' nemá atribut '{attribute_name}' s hodnotou '{expected_value}'")
+            raise e

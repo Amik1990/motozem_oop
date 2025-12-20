@@ -4,7 +4,7 @@ import re
 
 class MotozemDobraPage(BasePage):
 
-    def load(self):
+    def load(self):  # pouzije se pak v fixture_utils.py v setup_page casti try  instance.load
      self.navigate("https://www.motozem.cz/motozem-dobra/")
      self.accept_cookies()
      # Ověření, že se stránka skutečně načetla (vidím nadpis)

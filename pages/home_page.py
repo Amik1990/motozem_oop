@@ -3,22 +3,21 @@ from playwright.sync_api import expect, Locator
 
 class HomePage(BasePage):
 
-
-    def load(self):
+    def load(self): # pouzije se pak v fixture_utils.py v setup_page casti try  instance.load
         self.navigate("https://www.motozem.cz/")
         self.accept_cookies()
 
     def is_banner_visible(self):
         banner = self.page.get_by_role("banner").get_by_role("link", name="MotoZem", exact=True)
-        expect(banner).to_be_visible()
+        self.expect_visible(banner, name="MotoZem")
 
     def poradime_vam_menu_is_visible(self):
         poradime_button = self.page.get_by_label("Máte dotaz?")
-        expect(poradime_button).to_be_visible()
+        self.expect_visible(poradime_button, name="Máte dotaz?")
 
     def poradime_vam_menu_content_is_present(self):
         poradime_button = self.page.get_by_role("link", name="Máte dotaz?")
-        poradime_button.click()
+        self.click(poradime_button, name="Máte dotaz?")
 
         poradime_menu = [
             {"selector": self.page.get_by_role("link", name="Napsat dotaz"), "text": "Napsat dotaz"},
@@ -28,49 +27,49 @@ class HomePage(BasePage):
 
         for item in poradime_menu:
             menu_item = item["selector"]
-            expect(menu_item).to_be_visible()
-            expect(menu_item).to_have_text(item["text"])
+            item_name = item["text"]
+            self.expect_visible(menu_item, name=item_name)
+            self.to_have_text(menu_item, item["text"], name=item_name)
 
-    def state_flag_is_visible(self):
-        state_flag = self.page.get_by_role("link", name="Motozem.cz", exact=True)
-        expect(state_flag).to_be_visible()
 
-    def state_flags_are_visible_when_hover_over(self):
+    def state_flags_are_visible(self):
         state_flag = self.page.get_by_role("link", name="Motozem.cz", exact=True)
-        state_flag.hover()
+        self.hover(state_flag, name="Vlajka CZ")
 
         flag_items = [
-            {"selector": self.page.get_by_role("link", name="Motozem.sk"), "aria_label": "Motozem.sk"},
-            {"selector": self.page.get_by_role("link", name="Motozem.hu"), "aria_label": "Motozem.hu"},
-            {"selector": self.page.get_by_role("link", name="Motozem.pl"), "aria_label": "Motozem.pl"},
-            {"selector": self.page.get_by_role("link", name="Motozem.at"), "aria_label": "Motozem.at"},
-            {"selector": self.page.get_by_role("link", name="Motozem.de"), "aria_label": "Motozem.de"},
-            {"selector": self.page.get_by_role("link", name="Motozem.ro"), "aria_label": "Motozem.ro"},
-            {"selector": self.page.get_by_role("link", name="Motozem.hr"), "aria_label": "Motozem.hr"},
-            {"selector": self.page.get_by_role("link", name="Motozem.si"), "aria_label": "Motozem.si"},
+            {"selector": self.page.get_by_role("link", name="Motozem.sk"), "name": "Motozem.sk"},
+            {"selector": self.page.get_by_role("link", name="Motozem.hu"), "name": "Motozem.hu"},
+            {"selector": self.page.get_by_role("link", name="Motozem.ro"), "name": "Motozem.ro"},
+            {"selector": self.page.get_by_role("link", name="Motozem.sk"), "name": "Motozem.sk"},
+            {"selector": self.page.get_by_role("link", name="Motozem.hr"), "name": "Motozem.hr"},
+            {"selector": self.page.get_by_role("link", name="Motozem.pl"), "name": "Motozem.pl"},
+            {"selector": self.page.get_by_role("link", name="Motozem.at"), "name": "Motozem.at"},
+            {"selector": self.page.get_by_role("link", name="Motozem.de"), "name": "Motozem.de"},
+            {"selector": self.page.get_by_role("link", name="Motozem.si"), "name": "Motozem.si"},
         ]
 
         for flag in flag_items:
             menu_item = flag["selector"]
-            expect(menu_item).to_be_visible()
-            expect(menu_item).to_have_attribute("aria-label", flag["aria_label"])
-
+            item_name = flag["name"]
+            self.expect_visible(menu_item, name=item_name)
 
     def muj_ucet_is_visible(self):
         muj_ucet = self.page.get_by_role("link", name="Můj účet")
-        expect(muj_ucet).to_be_visible()
+        self.expect_visible(muj_ucet, name="Můj účet")
 
     def ucet_menu_is_visible_when_hoover_over_muj_ucet(self):
         muj_ucet = self.page.get_by_role("link", name="Můj účet")
         muj_ucet_menu = self.page.get_by_text("Přihlásit Registrovat")
-        muj_ucet.hover()
-        expect(muj_ucet_menu).to_be_visible()
+
+        self.hover(muj_ucet, name="Můj účet")
+        self.expect_visible(muj_ucet_menu, name="Přihlásit Registrovat")
 
     def prihlaseni_uzivatele_is_visible(self):
         muj_ucet = self.page.get_by_role("link", name="Můj účet")
         prihlaseni_uzivatele_text = self.page.get_by_role("heading", name="Přihlášení uživatele")
-
-        muj_ucet.hover()
         prihlasit = self.page.get_by_label("Přihlásit")
-        prihlasit.click()
-        expect(prihlaseni_uzivatele_text).to_have_text("Přihlášení uživatele")
+
+        self.hover(muj_ucet, name="Můj účet")
+        self.click(prihlasit, name="Přihlásit" )
+        self.expect_visible(prihlaseni_uzivatele_text, name="Přihlášení uživatele")
+
