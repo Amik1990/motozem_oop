@@ -10,12 +10,12 @@ class HeaderPage(BasePage):
     def informace_menu_is_visible_when_hover_over(self):
         informace_button = self.page.get_by_role("link", name="Informace")
         informace_menu = self.page.get_by_text("O nás Obchodní podmínky Ochrana osobních údajů Velkoobchod Prodejny Články Vnit")
-        informace_button.hover()
-        expect(informace_menu).to_be_visible()
+        self.hover(informace_button, name="Informace")
+        self.expect_visible(informace_menu, name="O nás Obchodní podmínky Ochrana osobních údajů Velkoobchod Prodejny Články Vnit")
 
     def informace_menu_content(self):
         informace_button = self.page.get_by_role("link", name="Informace")
-        informace_button.hover()
+        self.hover(informace_button, name="Informace")
 
         informace_items = [
             {"selector": self.page.get_by_title("O nás"), "text": "O nás"},
@@ -30,18 +30,19 @@ class HeaderPage(BasePage):
 
         for item in informace_items:
             menu_item = item["selector"]
-            expect(menu_item).to_be_visible()
-            expect(menu_item).to_have_text(item["text"])
+            item_text = item["text"]
+            self.expect_visible(menu_item, name=item_text)
+            self.to_have_text(menu_item, item_text, name=item_text)
 
     def prodejny_menu_is_visible_when_hover_over(self):
         prodejny_button = self.page.get_by_role("banner").get_by_role("link", name="Prodejny")
         prodejny_menu = self.page.locator("li").filter(has_text="Prodejny Dobrá Brno Čestlice").get_by_role("list")
-        prodejny_button.hover()
-        expect(prodejny_menu).to_be_visible()
+        self.hover(prodejny_button, name="Prodejny")
+        self.expect_visible(prodejny_menu, name="Prodejny Dobrá Brno Čestlice")
 
     def prodejny_menu_content(self):
         prodejny_button = self.page.get_by_role("banner").get_by_role("link", name="Prodejny")
-        prodejny_button.hover()
+        self.hover(prodejny_button, name="Prodejny")
 
         prodejny_items = [
             {"selector": self.page.get_by_title("Dobrá"), "text": "Dobrá"},
@@ -54,5 +55,7 @@ class HeaderPage(BasePage):
 
         for item in prodejny_items:
             menu_item = item["selector"]
-            expect(menu_item).to_be_visible()
-            expect(menu_item).to_have_text(item["text"])
+            item_text = item['text']
+            self.expect_visible(menu_item, name=item_text)
+            self.to_have_text(menu_item, item_text, name=item_text)
+
