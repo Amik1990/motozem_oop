@@ -9,8 +9,8 @@ class LoginPage(BasePage):
 
     def invalid_login(self, email, password):
         # Použití self.fill z BasePage pro logování a zjednodušení selektoru (ID stačí)
-        self.fill("#sUserLogin", email, name="Email")
-        self.fill("#sUserPassword", password, name="Heslo")
+        self.fill("#sUserLogin >> visible=true", email, name="Email")
+        self.fill("#sUserPassword >> visible=true", password, name="Heslo")
 
         # Použití self.click z BasePage
         self.click(self.page.get_by_role("button", name="Přihlásit se"), name="Tlačítko Přihlásit")

@@ -40,3 +40,4 @@ class MotozemDobraPage(BasePage):
         expect(google_maps).to_have_url(re.compile(r"https://www\.google\.[a-z.]+/maps.*"))
         google_maps_dobra = google_maps.get_by_role("heading", name="MotoZem - Dobrá", exact=True)
         self.expect_visible(google_maps_dobra, "Google Maps", timeout=5000)
+

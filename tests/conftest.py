@@ -22,7 +22,7 @@ def browser_type_launch_args(browser_type_launch_args):
     """
     return {
         **browser_type_launch_args,
-        "headless": False,  # Tímto zapnnu Headed mód
+        "headless": True,  # Tímto zapnnu Headed mód
         "slow_mo": 500      # Volitelné: zpomalí test, abych viděl, co se děje
     }
 
