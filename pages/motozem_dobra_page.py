@@ -5,10 +5,10 @@ import re
 class MotozemDobraPage(BasePage):
 
     def load(self):  # pouzije se pak v fixture_utils.py v setup_page casti try  instance.load
-     self.navigate("https://www.motozem.cz/motozem-dobra/")
-     self.accept_cookies()
-     # Ověření, že se stránka skutečně načetla (vidím nadpis)
-     self.expect_visible(self.page.get_by_role("heading", name="Motoshop Dobrá"), name="Nadpis Motoshop Dobrá")
+        self.navigate("https://www.motozem.cz/motozem-dobra/")
+        self.accept_cookies()
+        # Ověření, že se stránka skutečně načetla (vidím nadpis)
+        self.expect_visible(self.page.get_by_role("heading", name="Motoshop Dobrá"), name="Nadpis Motoshop Dobrá")
 
     def lokace_dobra_google_maps_open(self):
         motoshop_dobra_banner = self.page.get_by_role("heading", name="Motoshop Dobrá")

@@ -105,8 +105,8 @@ def load_motozem_dobra(page: Page):
 
 
 # kód níže použiju, když chci změnit jazyk webové stránky
-from playwright.sync_api import BrowserType
-from typing import Dict
+# from playwright.sync_api import BrowserType
+# from typing import Dict
 
 
 # @pytest.fixture(scope="session")
@@ -124,4 +124,3 @@ from typing import Dict
 #             })
 #     yield context
 #     context.close()
-
