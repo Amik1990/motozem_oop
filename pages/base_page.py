@@ -45,11 +45,11 @@ class BasePage:
         self.LOG.info(f"Ověřuji, zda je viditelný {name}")
         element.hover()
 
-    def expect_visible(self, element: Locator, name: str = "element"):
+    def expect_visible(self, element: Locator, name: str = "element", timeout: int = 5000):    # name: str = "element"  tady pak muzu psat vlastni text
         """Ověří, že je prvek viditelný, s logováním výsledku."""
         self.LOG.info(f"Ověřuji, zda je viditelný: {name}")   # Logování pokusu o validaci
         try:
-            expect(element).to_be_visible()
+            expect(element).to_be_visible(timeout=timeout)
             self.LOG.success(f"Prvek '{name}' je viditelný")  # Logování úspěchu
         except Exception as e:
             self.LOG.error(f"Prvek '{name}' není viditelný!") # Logování chyby
