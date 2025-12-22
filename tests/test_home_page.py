@@ -1,8 +1,7 @@
 from pages.home_page import HomePage
 from playwright.sync_api import expect, Page
 
-# def test_load_home_page(load_home_page):
-#     load_home_page.load()
+
 
 def test_banner_motozem_is_visible(load_home_page):   # funkce zavola metodu (load_home_page) z conftest a ta pak pres setup_page vytahne metodu (home_page.is_banner_visible()) z home_page.py
     load_home_page.is_banner_visible()

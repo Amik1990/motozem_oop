@@ -10,6 +10,3 @@ import pytest
 def test_invalid_login(load_login_page, email, password):
     load_login_page.invalid_login(email, password)
 
-
-# def test_invalid_login(load_login_page: LoginPage, email, password):
-#     load_login_page.invalid_login(email, password)

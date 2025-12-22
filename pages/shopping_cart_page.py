@@ -1,14 +1,24 @@
 from pages.base_page import BasePage
 from playwright.sync_api import expect
 import re
+from utils.config import config
 
 class ShoppingCartPage(BasePage):
+    """
+    Třída reprezentující nákupní košík.
+    """
 
-    def load(self):  # pouzije se pak v fixture_utils.py v setup_page casti try  instance.load
-        self.navigate("https://www.motozem.cz/")
+    def load(self) -> None:
+        """
+        Načte domovskou stránku (košík je prázdný, začínáme nákupem) a potvrdí cookies.
+        """
+        self.navigate(config.BASE_URL)
         self.accept_cookies()
 
-    def add_to_shopping_cart(self):
+    def add_to_shopping_cart(self) -> None:
+        """
+        Vyhledá produkt, přidá ho do košíku a ověří, že se počet položek v košíku změnil.
+        """
         self.page.get_by_role("banner").get_by_role("textbox").fill("revit tornado 4")
         revit_tornado = self.page.get_by_text(
             re.compile(r"Bunda na motorku Revit Tornado 4 H2O černo-antracitová.*Skladem")
@@ -20,12 +30,18 @@ class ShoppingCartPage(BasePage):
 
         self.click(lupa, name="Hledat")
         self.expect_visible(revit_tornado, name="Bunda na motorku Revit Tornado 4 H2O černo-antracitová.*Skladem", timeout=10000)
-        self.click(revit_tornado, "Revit Tornado 4")
+        self.click(revit_tornado, name="Revit Tornado 4")
         self.click(medium_size, name="Medium size")
         self.click(koupit_button, name="Koupit")
+        
+        # Ověření, že košík ukazuje 2 položky
+        self.expect_visible(pocet_v_kosiku_dva, name="Počet v košíku: 2", timeout=10000)
         self.to_have_text(pocet_v_kosiku_dva, "2", name="Počet v košíku: 2")
 
-    def change_amount_in_shopping_cart(self):
+    def change_amount_in_shopping_cart(self) -> None:
+        """
+        Přidá produkt do košíku, přejde do košíku a změní množství položek.
+        """
         self.add_to_shopping_cart()
         do_kosiku_button = self.page.get_by_role("link", name="Do košíku")
         pocet_bund = self.page.locator("input[name=\"iBasketProductCount\"]")
@@ -35,10 +51,9 @@ class ShoppingCartPage(BasePage):
         self.click(do_kosiku_button, name="Do košíku")
         self.click(pridat, "+")
         self.to_have_value(pocet_bund, "2", name="Počet v košíku: 2")
-        self.click(pridat,"+")
+        self.click(pridat, "+")
         self.to_have_value(pocet_bund, "3", name="Počet v košíku: 3")
         self.click(pridat, "+")
         self.to_have_value(pocet_bund, "4", name="Počet v košíku: 4")
         self.click(odebrat, "-")
         self.to_have_value(pocet_bund, "3", name="Počet v košíku: 3")
-
