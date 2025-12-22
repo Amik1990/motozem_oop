@@ -4,3 +4,4 @@ pytest-playwright
 allure-pytest
 python-dotenv
 pytest-xdist
+loguru
