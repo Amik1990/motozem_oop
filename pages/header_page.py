@@ -46,7 +46,7 @@ class HeaderPage(BasePage):
 
         prodejny_items = [
             {"selector": self.page.get_by_title("Dobrá"), "text": "Dobrá"},
-            {"selector": self.page.get_by_title("Brno"), "text": "Brno"},
+            {"selector": self.page.get_by_title("Brno", exact=True), "text": "Brno"},
             {"selector": self.page.get_by_title("Čestlice"), "text": "Čestlice"},
             {"selector": self.page.get_by_title("Senec"), "text": "Senec"},
             {"selector": self.page.get_by_title("Plzeň"), "text": "Plzeň"},
