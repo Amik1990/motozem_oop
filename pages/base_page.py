@@ -47,7 +47,7 @@ class BasePage:
 
     def expect_visible(self, element: Locator, name: str = "element", timeout: int = 5000):    # name: str = "element"  tady pak muzu psat vlastni text
         """Ověří, že je prvek viditelný, s logováním výsledku."""
-        self.LOG.info(f"Ověřuji, zda je viditelný: {name}")   # Logování pokusu o validaci
+        self.LOG.info(f"Ověřuji, zda prvek je viditelný: {name}")   # Logování pokusu o validaci
         try:
             expect(element).to_be_visible(timeout=timeout)
             self.LOG.success(f"Prvek '{name}' je viditelný")  # Logování úspěchu
@@ -59,8 +59,11 @@ class BasePage:
         """Ověří, že prvek obsahuje konkrétní text."""
         self.LOG.info(f"Ověřuji, zda má '{name}'  text: '{expected_text} ")
         try:
+            # Provedeme samotné ověření
             expect(element).to_have_text(expected_text)
-            self.LOG.success(f"Prvek '{name}' obsahuje text: '{expected_text}")  # Logování úspěchu
+            # Získáme aktuální text pro log
+            actual_text = element.inner_text()
+            self.LOG.success(f"Prvek '{name}' obsahuje text: '{actual_text}', očekáváme: '{expected_text}'")  # Logování úspěchu
         except Exception as e:
             actual_text = element.inner_text()     # Získání aktuálního textu pro lepší debug
             self.LOG.error(f"Chyba: '{name}' má text '{actual_text}', ale čekali jsme '{expected_text}'")  # Logování chyby
@@ -74,4 +77,14 @@ class BasePage:
             self.LOG.success(f"Prvek '{name}' má atribut '{attribute_name}' s hodnotou: '{expected_value}'")
         except Exception as e:
             self.LOG.error(f"Chyba: Prvek '{name}' nemá atribut '{attribute_name}' s hodnotou '{expected_value}'")
+            raise e
+
+    def to_have_value(self, element: Locator, expected_value: str, name: str = "element"):
+
+        self.LOG.info(f"Ověřuji, zda má '{name}' hodnotu: '{expected_value}'")
+        try:
+            expect(element).to_have_value(expected_value)
+            self.LOG.success(f"Prvek '{name}' má hodnotu: '{expected_value}'")
+        except Exception as e:
+            self.LOG.error(f"Chyba: Prvek '{name}' nemá hodnotu '{expected_value}'")
             raise e
