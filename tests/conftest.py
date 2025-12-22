@@ -3,6 +3,7 @@ import pytest
 import re
 from playwright.sync_api import BrowserType, sync_playwright, Page, expect
 from utils import get_logger
+from utils.config import config  # Import configu
 
 from pages import (
     HeaderPage,
@@ -18,11 +19,11 @@ from utils.fixture_utils import setup_page # Import naší nové pomocné funkce
 def browser_type_launch_args(browser_type_launch_args):
     """
     Tato fixture nastavuje parametry pro spuštění prohlížeče.
-    Headless=False zajistí, že se vždy otevře okno.
+    Hodnota headless se bere z konfigurace (.env).
     """
     return {
         **browser_type_launch_args,
-        "headless": True,  # Tímto zapnnu Headed mód
+        "headless": config.BROWSER_HEADLESS,  # Použití hodnoty z configu
         "slow_mo": 500      # Volitelné: zpomalí test, abych viděl, co se děje
     }
 
@@ -105,8 +106,8 @@ def load_motozem_dobra(page: Page):
 
 
 # kód níže použiju, když chci změnit jazyk webové stránky
-# from playwright.sync_api import BrowserType
-# from typing import Dict
+from playwright.sync_api import BrowserType
+from typing import Dict
 
 
 # @pytest.fixture(scope="session")
