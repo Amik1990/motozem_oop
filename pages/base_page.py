@@ -1,14 +1,17 @@
-from playwright.sync_api import Page, expect
-from playwright.sync_api import Locator
 import re
+
+from playwright.sync_api import Locator, Page, expect
+
+from utils.exceptions import ElementNotVisibleError, NetworkResponseError, TextMismatchError
 from utils.logger_config import get_logger
+
 
 class BasePage:
     """
     Základní třída pro všechny Page Objecty.
     Obsahuje společné metody pro interakci s prohlížečem a logování.
     """
-    
+
     def __init__(self, page: Page):
         self.page = page
         self.LOG = get_logger(self.__class__.__name__)
@@ -28,7 +31,7 @@ class BasePage:
     def click(self, element, name: str = "element") -> None:
         """
         Kliknutí na element (podporuje string i Locator).
-        
+
         Args:
             element: Selektor (str) nebo Locator objekt.
             name: Název prvku pro logování.
@@ -42,14 +45,14 @@ class BasePage:
     def click_and_wait_for_response(self, element: Locator, url_pattern: str, name: str = "element") -> None:
         """
         Klikne na prvek a počká na síťovou odpověď (API request).
-        
+
         Args:
             element: Tlačítko, na které se kliká.
             url_pattern: Regulární výraz nebo část URL, na kterou se čeká.
             name: Název pro logování.
         """
         self.LOG.info(f"Klikám na '{name}' a čekám na odpověď obsahující '{url_pattern}'")
-        
+
         # Lambda funkce ověří, že URL obsahuje náš pattern a status je 200 (OK)
         # Používáme re.search pro flexibilitu (pokud je url_pattern regex)
         def predicate(response):
@@ -57,12 +60,14 @@ class BasePage:
             return url_match and response.status == 200
 
         try:
-            with self.page.expect_response(predicate, timeout=10000) as response_info:
+            # OPRAVA: Odstraněno 'as response_info', protože proměnnou nepoužíváme (Ruff F841)
+            with self.page.expect_response(predicate, timeout=10000):
                 self.click(element, name)
             self.LOG.success(f"Odpověď pro '{url_pattern}' úspěšně zachycena.")
         except Exception as e:
             self.LOG.error(f"Časový limit vypršel při čekání na odpověď '{url_pattern}' po kliknutí na '{name}'.")
-            raise e
+            # Vyhodíme naši vlastní chybu
+            raise NetworkResponseError(url_pattern) from e
 
     def fill(self, selector: Locator | str, value: str, name: str = "input field") -> None:
         """
@@ -70,7 +75,7 @@ class BasePage:
         Podporuje jak string selektor, tak Locator objekt.
         """
         self.LOG.info(f"Vyplňování {name} (Selektor: {selector}) s hodnotou: '***'")
-        
+
         if hasattr(selector, "fill") and not isinstance(selector, str):
             selector.fill(value)
         else:
@@ -90,7 +95,7 @@ class BasePage:
     def expect_visible(self, element: Locator, name: str = "element", timeout: int = 5000) -> None:
         """
         Ověří, že je prvek viditelný.
-        
+
         Args:
             element: Locator prvku.
             name: Název prvku pro logování.
@@ -102,7 +107,8 @@ class BasePage:
             self.LOG.success(f"Prvek '{name}' je viditelný")
         except Exception as e:
             self.LOG.error(f"Prvek '{name}' není viditelný! (Timeout: {timeout}ms)")
-            raise e
+            # Vyhodíme naši vlastní chybu
+            raise ElementNotVisibleError(name, timeout) from e
 
     def to_have_text(self, element: Locator, expected_text: str, name: str = "element") -> None:
         """
@@ -114,9 +120,14 @@ class BasePage:
             actual_text = element.inner_text()
             self.LOG.success(f"Prvek '{name}' obsahuje text: '{actual_text}', očekáváme: '{expected_text}'")
         except Exception as e:
-            actual_text = element.inner_text()
+            try:
+                actual_text = element.inner_text()
+            # OPRAVA: Specifikujeme Exception místo bare 'except' (Ruff E722)
+            except Exception:
+                actual_text = "Neznámý (element nenalezen)"
             self.LOG.error(f"Chyba: '{name}' má text '{actual_text}', ale čekali jsme '{expected_text}'")
-            raise e
+            # Vyhodíme naši vlastní chybu
+            raise TextMismatchError(name, expected_text, actual_text) from e
 
     def to_have_attribute(self, element: Locator, attribute_name: str, expected_value: str, name: str = "element") -> None:
         """
@@ -145,6 +156,9 @@ class BasePage:
             try:
                 actual_value = element.input_value()
                 self.LOG.error(f"Chyba: Prvek '{name}' má hodnotu '{actual_value}', ale čekali jsme '{expected_value}'")
-            except:
+                # Vyhodíme naši vlastní chybu
+                raise TextMismatchError(name, expected_value, actual_value) from e
+            # OPRAVA: Specifikujeme Exception místo bare 'except' (Ruff E722)
+            except Exception:
                 self.LOG.error(f"Chyba: Prvek '{name}' nemá očekávanou hodnotu '{expected_value}' a nepodařilo se získat jeho aktuální hodnotu.")
-            raise e
+                raise e
