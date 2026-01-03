@@ -29,6 +29,5 @@ class LoginPage(BasePage):
 
         self.fill(email_input, email, name="E-mail input")
         self.fill(password_input, password, name="Password input")
-        self.click(prihlasit_se, name="Tlačítko Přihlásit se")
-        
+        self.click_and_wait_for_response(prihlasit_se,r"(?i)login|prihlaseni" ,name="Tlačítko Přihlásit se")
         self.expect_visible(error_message, name="Chybová hláška neplatného přihlášení")
