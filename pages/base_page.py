@@ -39,6 +39,31 @@ class BasePage:
         else:
             self.page.click(element)
 
+    def click_and_wait_for_response(self, element: Locator, url_pattern: str, name: str = "element") -> None:
+        """
+        Klikne na prvek a počká na síťovou odpověď (API request).
+        
+        Args:
+            element: Tlačítko, na které se kliká.
+            url_pattern: Regulární výraz nebo část URL, na kterou se čeká.
+            name: Název pro logování.
+        """
+        self.LOG.info(f"Klikám na '{name}' a čekám na odpověď obsahující '{url_pattern}'")
+        
+        # Lambda funkce ověří, že URL obsahuje náš pattern a status je 200 (OK)
+        # Používáme re.search pro flexibilitu (pokud je url_pattern regex)
+        def predicate(response):
+            url_match = re.search(url_pattern, response.url) or (url_pattern in response.url)
+            return url_match and response.status == 200
+
+        try:
+            with self.page.expect_response(predicate, timeout=10000) as response_info:
+                self.click(element, name)
+            self.LOG.success(f"Odpověď pro '{url_pattern}' úspěšně zachycena.")
+        except Exception as e:
+            self.LOG.error(f"Časový limit vypršel při čekání na odpověď '{url_pattern}' po kliknutí na '{name}'.")
+            raise e
+
     def fill(self, selector: Locator | str, value: str, name: str = "input field") -> None:
         """
         Vyplnění input pole.
