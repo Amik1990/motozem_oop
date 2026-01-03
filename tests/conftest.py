@@ -1,19 +1,20 @@
-from typing import Dict
 import pytest
-import re
-from playwright.sync_api import BrowserType, sync_playwright, Page, expect
-from utils import get_logger
+from faker import Faker  # Import Fakeru
+from playwright.sync_api import Page
+
+from pages import HeaderPage, HomePage, LoginPage, MotozemDobraPage, ShoppingCartPage
 from utils.config import config  # Import configu
+from utils.fixture_utils import setup_page  # Import naší nové pomocné funkce
 
-from pages import (
-    HeaderPage,
-    LoginPage,
-    MotozemDobraPage,
-    HomePage,
-    ShoppingCartPage
-)
+# --- VYSVĚTLENÍ FIXTURES ---
+# Fixture je funkce dekorovaná @pytest.fixture.
+# Slouží k přípravě prostředí (Setup) před testem a úklidu (Teardown) po testu.
+# Test si o ni řekne tím, že uvede její název jako argument funkce.
+#
+# Parametr scope="...":
+# - "function" (default): Spustí se pro KAŽDÝ test znovu (čistý stav).
+# - "session": Spustí se jen JEDNOU na začátku celého testování (rychlejší, sdílené).
 
-from utils.fixture_utils import setup_page # Import naší nové pomocné funkce
 
 @pytest.fixture(scope="session")
 def browser_type_launch_args(browser_type_launch_args):
@@ -24,8 +25,9 @@ def browser_type_launch_args(browser_type_launch_args):
     return {
         **browser_type_launch_args,
         "headless": config.BROWSER_HEADLESS,  # Použití hodnoty z configu
-        "slow_mo": 500      # Volitelné: zpomalí test, abych viděl, co se děje
+        "slow_mo": 500,  # Volitelné: zpomalí test, abych viděl, co se děje
     }
+
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args):
@@ -35,28 +37,50 @@ def browser_context_args(browser_context_args):
     """
     return {
         **browser_context_args,
-        "viewport": None, # Nastavení velikosti okna
+        "viewport": None,  # Nastavení velikosti okna
     }
 
+
+@pytest.fixture(scope="session")
+def fake():
+    """
+    Fixture pro generování náhodných dat.
+    Nastaveno na češtinu (cs_CZ).
+    Scope="session": Stačí nám jeden generátor pro všechny testy (šetříme výkon).
+    """
+    return Faker("cs_CZ")
+
+
+# --- PAGE OBJECT FIXTURES ---
+# Tyto fixtures mají defaultní scope="function".
+# To znamená, že pro každý test dostaneme NOVOU instanci stránky.
+# Je to důležité, aby jeden test neovlivnil druhý (např. zůstal přihlášený).
+
+
 @pytest.fixture()
-def load_home_page(page: Page):    # načtění stránky motozem
+def load_home_page(page: Page):  # načtění stránky motozem
     return setup_page(HomePage, page)
 
+
 @pytest.fixture()
-def load_header_page(page: Page):    # načtění stránky motozem
+def load_header_page(page: Page):  # načtění stránky motozem
     return setup_page(HeaderPage, page)
 
-@pytest.fixture()
-def load_login_page(page: Page):    # načtění stránky motozem
-    return setup_page(LoginPage, page)
 
 @pytest.fixture()
-def load_shopping_cart_page(page: Page):    # načtění stránky motozem
+def load_login_page(page: Page):  # načtění stránky motozem
+    return setup_page(LoginPage, page)
+
+
+@pytest.fixture()
+def load_shopping_cart_page(page: Page):  # načtění stránky motozem
     return setup_page(ShoppingCartPage, page)
+
 
 @pytest.fixture()
 def load_motozem_dobra(page: Page):
     return setup_page(MotozemDobraPage, page)
+
 
 # @pytest.fixture()
 # def add_to_shopping_cart(page, load_home_page):
@@ -74,16 +98,16 @@ def load_motozem_dobra(page: Page):
 #     koupit_button.click()
 #     expect(pocet_v_kosiku).to_have_text("2")
 
-#Vytvořili jsme conftest.py s funkci viz níže, aby se ignorovaly případné chyby https během testování
-#@pytest.fixture(scope="session")
-#def browser_context_args(browser_context_args):
- #   return {
- #       **browser_context_args,
- #       "ignore_https_errors": True
-  #  }
+# Vytvořili jsme conftest.py s funkci viz níže, aby se ignorovaly případné chyby https během testování
+# @pytest.fixture(scope="session")
+# def browser_context_args(browser_context_args):
+#   return {
+#       **browser_context_args,
+#       "ignore_https_errors": True
+#  }
 
 
-#Kód níže nám slouží ke změně rozlišení v prováděných testech
+# Kód níže nám slouží ke změně rozlišení v prováděných testech
 # @pytest.fixture(scope="session")
 # # def browser_context_args(browser_context_args):
 # #     return {
@@ -106,8 +130,6 @@ def load_motozem_dobra(page: Page):
 
 
 # kód níže použiju, když chci změnit jazyk webové stránky
-from playwright.sync_api import BrowserType
-from typing import Dict
 
 
 # @pytest.fixture(scope="session")
