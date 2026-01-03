@@ -1,6 +1,6 @@
 from pages.base_page import BasePage
-from playwright.sync_api import expect
 from utils.config import config
+
 
 class LoginPage(BasePage):
     """
@@ -29,5 +29,7 @@ class LoginPage(BasePage):
 
         self.fill(email_input, email, name="E-mail input")
         self.fill(password_input, password, name="Password input")
-        self.click_and_wait_for_response(prihlasit_se,r"(?i)login|prihlaseni" ,name="Tlačítko Přihlásit se")
+        self.click_and_wait_for_response(
+            prihlasit_se, r"(?i)login|prihlaseni", name="Tlačítko Přihlásit se"
+        )  # (?i) bude brát v potaz velká i malá písmena
         self.expect_visible(error_message, name="Chybová hláška neplatného přihlášení")
