@@ -5,7 +5,7 @@ addopts = "-n auto --alluredir=allure-results"
 
 [tool.ruff]
 # Nastavení linteru a formátovače Ruff
-line-length = 120  # Maximální délka řádku (pro testy je lepší víc než standardních 88)
+line-length = 150  # Maximální délka řádku (pro testy je lepší víc než standardních 88)
 target-version = "py310" # Cílíme na moderní Python
 
 [tool.ruff.lint]
