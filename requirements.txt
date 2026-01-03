@@ -1,3 +1,17 @@
+# --- CO JE TENTO SOUBOR? ---
+# Toto je "nákupní seznam" pro Python (seznam závislostí).
+# Říká Jenkinsovi, GitHub Actions a kolegům, jaké knihovny si mají nainstalovat,
+# aby jim projekt fungoval stejně jako mně.
+#
+# DŮLEŽITÉ:
+# 1. Bez tohoto souboru by CI/CD (Jenkins) okamžitě spadl, protože začíná s prázdným počítačem
+#    a neví, co má nainstalovat.
+# 2. U mě lokálně to funguje i bez něj (protože už to mám nainstalované), ale jinde ne.
+#
+# PŘÍKAZY:
+# Instalace knihoven ze seznamu: pip install -r requirements.txt
+# Uložení aktuálních knihoven do seznamu: pip freeze > requirements.txt
+
 playwright
 pytest
 pytest-playwright
@@ -5,3 +19,5 @@ allure-pytest
 python-dotenv
 pytest-xdist
 loguru
+ruff
+pre-commit
