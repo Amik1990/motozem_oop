@@ -2,7 +2,7 @@ services:
   tests:
     build: .
     volumes:
-      # Propojíme složku s výsledky v kontejneru se složkou u vás na disku
+      # Propojíme složku s výsledky v kontejneru se složkou u mě na disku
       - ./allure-results:/app/allure-results
       # Propojíme i logy, abyste je viděl
       - ./logs:/app/logs
