@@ -53,21 +53,31 @@ class BasePage:
         """
         self.LOG.info(f"Klikám na '{name}' a čekám na odpověď obsahující '{url_pattern}'")
 
-        # Lambda funkce ověří, že URL obsahuje náš pattern a status je 200 (OK)
-        # Používáme re.search pro flexibilitu (pokud je url_pattern regex)
+        # --- VYSVĚTLENÍ PREDIKÁTU ---
+        # Tato funkce (predicate) slouží jako filtr. Playwright ji zavolá pro KAŽDOU
+        # síťovou odpověď (obrázky, CSS, API...), která po kliknutí přijde.
+        #
+        # Argument 'response': Je objekt třídy Response z Playwrightu.
+        # Obsahuje data o odpovědi, např:
+        #   - response.url: Adresa (např. "https://www.motozem.cz/ajax/basket")
+        #   - response.status: Kód stavu (200 = OK, 404 = Not Found, 500 = Error)
         def predicate(response):
+            # Zde kontrolujeme, zda je to ta URL, na kterou čekáme.
+            # 1. re.search(...): Zkusíme to najít jako Regex (pro složité vzory jako r"(?i)basket").
+            # 2. or (... in ...): Pojistka - zkusíme to najít jako obyčejný text.
             url_match = re.search(url_pattern, response.url) or (url_pattern in response.url)
+
+            # Vracíme True (našli jsme) jen pokud sedí URL A ZÁROVEŇ server řekl "200 OK".
             return url_match and response.status == 200
 
         try:
-            # OPRAVA: Odstraněno 'as response_info', protože proměnnou nepoužíváme (Ruff F841)
             with self.page.expect_response(predicate, timeout=10000):
                 self.click(element, name)
             self.LOG.success(f"Odpověď pro '{url_pattern}' úspěšně zachycena.")
         except Exception as e:
             self.LOG.error(f"Časový limit vypršel při čekání na odpověď '{url_pattern}' po kliknutí na '{name}'.")
             # Vyhodíme naši vlastní chybu
-            raise NetworkResponseError(url_pattern) from e
+            raise NetworkResponseError(url_pattern) from e  # NetworkResponseError   bereme z filu exceptions.py
 
     def fill(self, selector: Locator | str, value: str, name: str = "input field") -> None:
         """
