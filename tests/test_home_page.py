@@ -1,25 +1,31 @@
 from pages.home_page import HomePage
-from playwright.sync_api import expect, Page
 
 
-
-def test_banner_motozem_is_visible(load_home_page):   # funkce zavola metodu (load_home_page) z conftest a ta pak pres setup_page vytahne metodu (home_page.is_banner_visible()) z home_page.py
+def test_banner_motozem_is_visible(
+    load_home_page: HomePage,
+):  # funkce zavola metodu (load_home_page) z conftest a ta pak pres setup_page vytahne metodu (home_page.is_banner_visible()) z home_page.py
     load_home_page.is_banner_visible()
 
-def test_poradime_vam_menu_is_visible(load_home_page):
+
+def test_poradime_vam_menu_is_visible(load_home_page: HomePage):
     load_home_page.poradime_vam_menu_is_visible()
 
-def test_poradime_vam_menu_content_is_present(load_home_page):
+
+def test_poradime_vam_menu_content_is_present(load_home_page: HomePage):
     load_home_page.poradime_vam_menu_content_is_present()
 
-def test_state_flags_are_visible(load_home_page):
+
+def test_state_flags_are_visible(load_home_page: HomePage):
     load_home_page.state_flags_are_visible()
 
-def test_muj_ucet_is_visible(load_home_page):
+
+def test_muj_ucet_is_visible(load_home_page: HomePage):
     load_home_page.muj_ucet_is_visible()
 
-def test_ucet_menu_is_visible_when_hoover_over_muj_ucet(load_home_page):
+
+def test_ucet_menu_is_visible_when_hoover_over_muj_ucet(load_home_page: HomePage):
     load_home_page.ucet_menu_is_visible_when_hoover_over_muj_ucet()
 
-def test_prihlaseni_uzivatele_is_visible(load_home_page):
+
+def test_prihlaseni_uzivatele_is_visible(load_home_page: HomePage):
     load_home_page.prihlaseni_uzivatele_is_visible()
