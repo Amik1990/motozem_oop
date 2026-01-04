@@ -21,3 +21,4 @@ pytest-xdist
 loguru
 ruff
 pre-commit
+Faker
