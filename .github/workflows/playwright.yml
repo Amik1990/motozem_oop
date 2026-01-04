@@ -9,6 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    
+    # ZDE NASTAVUJEME PROMĚNNÉ PROSTŘEDÍ PRO CELÝ JOB
+    env:
+      BASE_URL: https://www.motozem.cz
+      BROWSER_HEADLESS: true  # Důležité: Na serveru musí být vždy headless!
+      TIMEOUT: 10000
 
     steps:
       - name: ⬇️ Checkout kódu
@@ -66,4 +72,3 @@ jobs:
         with:
           name: allure-report
           path: allure-report
-          
